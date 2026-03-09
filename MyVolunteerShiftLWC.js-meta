@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+		<target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="title" type="String" label="Shift Section Title" description="Section title above the volunteer shift table"/>
+			<property name="fontSize" type="String" label="Title Font Size" default="16px"/>
+            <property name="fontWeight" type="String" label="Title Font Weight" default="600"/>
+            <property name="fontColor" type="color" label="Title Font Color" default="#1c1c1c"/>
+            <property name="fontFamily" type="String" label="Title Font Family" default="Arial, sans-serif"/>
+            <property name="floatAlign" type="String" label="Title Text Alignment" description="Example: right/left/center"/>
+            <property name="headingType" type="String" label="Title Heading Type" datasource= "Heading 1,Heading 2,Heading 3,Heading 4,Heading 5,Heading 6,Paragraph 1,Paragraph 2"/>
+
+            <property name="tableHeaderfontSize" type="String" label="Table Header Font Size"/>
+            <property name="tableHeaderfontColor" type="color" label="Table Header Font Color"/>
+            <property name="tableHeaderfontFamily" type="String" label="Table Header  Font Family"/>
+            <property name="tableHeaderfontWeight" type="String" label="Table Header Font Weight" default="600"/>
+            <property name="thHeadingType" type="String" label="Table Header Heading Type"  datasource= "Heading 1,Heading 2,Heading 3,Heading 4,Heading 5,Heading 6,Paragraph 1,Paragraph 2"/>
+
+            <property name="tableDatafontSize" type="String" label="Table Data Font Size"/>
+            <property name="tableDatafontColor" type="color" label="Table Data Font Color"/>
+            <property name="tableDatafontFamily" type="String" label="Table Data  Font Family"/>
+            <property name="tableDatafontWeight" type="String" label="Table Data Font Weight" default="600"/>
+            <property name="tdHeadingType" type="String" label="Table Data Heading Type"  datasource= "Heading 1,Heading 2,Heading 3,Heading 4,Heading 5,Heading 6,Paragraph 1,Paragraph 2"/>
+
+			<property name="disableHeaderStyle" type="Boolean" label="Apply Custom Styling" default="false" description= "Click the checkbox to remove the custom setting and apply the site default setting."/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
