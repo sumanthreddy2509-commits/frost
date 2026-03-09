@@ -2,7 +2,6 @@ import { LightningElement, track, api } from 'lwc';
 import getMyShifts from '@salesforce/apex/MyVolunteerShiftsController.getMyShifts';
 import LightningAlert from 'lightning/alert';
 
-
 export default class MyVolunteerShiftLWC extends LightningElement {
     @api title = '';
     @api fontSize = '16px';
@@ -25,7 +24,6 @@ export default class MyVolunteerShiftLWC extends LightningElement {
     @api thHeadingType;
     @api tdHeadingType;
 
-
     // Pagination range
     start = 0;
     end = 5;
@@ -34,10 +32,6 @@ export default class MyVolunteerShiftLWC extends LightningElement {
     shiftIndexMap = {};
 
     @track shifts = [];
-    @track modalEventName = '';
-    @track modalEventDate = '';
-    @track modalEventTime = '';
-    selectedShiftId = '';
 
     connectedCallback() {
         this.getMyShifts();
@@ -53,6 +47,8 @@ export default class MyVolunteerShiftLWC extends LightningElement {
                     result.forEach((shift, index) => {
                         this.shiftIndexMap[shift.Id] = index;
                     });
+                } else {
+                    this.shifts = []; // Empties the list if no shifts exist
                 }
             })
             .catch(error => {
@@ -62,6 +58,11 @@ export default class MyVolunteerShiftLWC extends LightningElement {
             .finally(() => {
                 this.showSpinner = false;
             });
+    }
+
+    // Getter to hide the component if no shifts are returned
+    get hasShifts() {
+        return this.shifts && this.shifts.length > 0;
     }
 
     get visibleShifts() {
@@ -84,16 +85,9 @@ export default class MyVolunteerShiftLWC extends LightningElement {
         this.end = 5;
     }
 
-    // Handles clicking on a shift row - opens edit page
-    handleRowClick(event) {
-        const index = event.currentTarget.dataset.index;
-        const shift = this.visibleShifts[index];
-        const campaignId = shift?.GW_Volunteers__Volunteer_Shift__r?.GW_Volunteers__Volunteer_Job__r?.GW_Volunteers__Campaign__c;
-        const conId = shift?.GW_Volunteers__Contact__c;
-        const shiftId = shift?.GW_Volunteers__Volunteer_Shift__c;
-
-        // Construct and navigate to shift update page
-        const url = `/s/volunteer-shift-update?campaignId=${campaignId}&conId=${conId}&shiftId=${shiftId}`;
+    // Redirect to static URL
+    handleRowClick() {
+        const url = '/learning-about-us/frost-for-good-volunteers/manage-events';
         window.open(url, '_self');
     }
 
@@ -121,7 +115,6 @@ export default class MyVolunteerShiftLWC extends LightningElement {
             `;
             }
         }
-
         return `
         font-size: ${this.fontSize};
         font-weight: ${this.fontWeight};
@@ -130,7 +123,7 @@ export default class MyVolunteerShiftLWC extends LightningElement {
         text-align: ${this.floatAlign};
     `;
     }
-    // Style for links in the campaign name
+
     get linkStyle() {
         if (!this.disableHeaderStyle) {
             return `
@@ -142,14 +135,13 @@ export default class MyVolunteerShiftLWC extends LightningElement {
                 cursor: pointer;
             `;
         }
-
         return `
             color: #0070d2;
             text-decoration: underline;
             cursor: pointer;
         `;
     }
-    // Style for table headers
+
     get headerStyle() {
         if (!this.disableHeaderStyle) {
             const headingMap = {
@@ -182,7 +174,6 @@ export default class MyVolunteerShiftLWC extends LightningElement {
         `;
     }
 
-    // Style for table cell data
     get dataStyle() {
         if (!this.disableHeaderStyle) {
             const headingMap = {
@@ -216,10 +207,6 @@ export default class MyVolunteerShiftLWC extends LightningElement {
     }
 
     showToast(msg, theme, label) {
-        LightningAlert.open({
-            message: msg,
-            theme: theme,
-            label: label
-        });
+        LightningAlert.open({ message: msg, theme: theme, label: label });
     }
 }
