@@ -1,61 +1,62 @@
-<!--
-    Name: myVolunteerShiftLWC
-    Requirement: #a2fPa000001HStlIAG
-    Developer Name: Aditya Rao
-    Company: Frost Bank
-    Purpose: Used for displaying upcoming volunteer shifts of the logged in user in frost Communities
-    Date Created: 05/9/2025
-    Last Modified Date: 05/14/2025
-    -->
 <template>
-    <div style={titleStyle}>{title}</div>
-    <br />
     <template if:true={showSpinner}>
         <lightning-spinner style="position:fixed" variant="brand"></lightning-spinner>
     </template>
-    <table class="slds-table slds-table_bordered slds-table_cell-buffer_right">
-        <thead>
-            <tr class="slds-text-title">
-                <th scope="col" style={headerStyle}>Event Name</th>
-                <th scope="col" style={headerStyle}>Date</th>
-                <th scope="col" style={headerStyle}>Shift Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            <template for:each={visibleShifts} for:item="shift" for:index="index">
-                <tr key={shift.Id} data-index={index}>
-                    <!-- Campaign Name (clickable row) -->
-                    <td style={dataStyle} onclick={handleRowClick}>
-                        <a style={linkStyle}>
-                            {shift.GW_Volunteers__Volunteer_Shift__r.GW_Volunteers__Volunteer_Job__r.GW_Volunteers__Campaign__r.Name}
-                        </a>
-                    </td>
 
-                    <!-- Shift Date -->
-                    <td style={dataStyle} onclick={handleRowClick}>
-                        <lightning-formatted-date-time
-                            value={shift.GW_Volunteers__Volunteer_Shift__r.GW_Volunteers__Start_Date_Time__c}
-                            year="numeric" month="numeric" day="numeric">
-                        </lightning-formatted-date-time>
-                    </td>
-                    <td style={dataStyle} onclick={handleRowClick}>
-                        <lightning-formatted-date-time
-                            value={shift.GW_Volunteers__Volunteer_Shift__r.GW_Volunteers__Start_Date_Time__c}
-                            hour="2-digit" minute="2-digit" hour12="true">
-                        </lightning-formatted-date-time>
-                    </td>
+    <template if:true={hasShifts}>
+        <div style={titleStyle}>{title}</div>
+        <br />
+        
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer_right">
+            <thead>
+                <tr class="slds-text-title">
+                    <th scope="col" style={headerStyle}>Event Name</th>
+                    <th scope="col" style={headerStyle}>Date</th>
+                    <th scope="col" style={headerStyle}>Shift Time</th>
                 </tr>
-            </template>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <template for:each={visibleShifts} for:item="shift" for:index="index">
+                    <tr key={shift.Id} data-index={index}>
+                        
+                        <td style={dataStyle} onclick={handleRowClick}>
+                            <a style={linkStyle}>
+                                {shift.GW_Volunteers__Volunteer_Shift__r.GW_Volunteers__Volunteer_Job__r.GW_Volunteers__Campaign__r.Name}
+                            </a>
+                        </td>
 
-    <!-- View All button -->
-    <template if:true={showViewAll}>
-        <lightning-button variant="base" label="View All" onclick={viewAll}></lightning-button>
-    </template>
+                        <td style={dataStyle} onclick={handleRowClick}>
+                            <lightning-formatted-date-time
+                                value={shift.GW_Volunteers__Volunteer_Shift__r.GW_Volunteers__Start_Date_Time__c}
+                                year="numeric" month="numeric" day="numeric">
+                            </lightning-formatted-date-time>
+                        </td>
+                        
+                        <td style={dataStyle} onclick={handleRowClick}>
+                            <lightning-formatted-date-time
+                                value={shift.GW_Volunteers__Volunteer_Shift__r.GW_Volunteers__Start_Date_Time__c}
+                                hour="2-digit" minute="2-digit" hour12="true">
+                            </lightning-formatted-date-time>
+                            
+                            <span> - </span>
+                            
+                            <lightning-formatted-date-time
+                                value={shift.GW_Volunteers__Volunteer_Shift__r.EndTime__c}
+                                hour="2-digit" minute="2-digit" hour12="true">
+                            </lightning-formatted-date-time>
+                        </td>
 
-    <!-- View Less button -->
-    <template if:true={showViewLess}>
-        <lightning-button variant="base" label="View Less" onclick={viewLess}></lightning-button>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+
+        <template if:true={showViewAll}>
+            <lightning-button variant="base" label="View All" onclick={viewAll}></lightning-button>
+        </template>
+
+        <template if:true={showViewLess}>
+            <lightning-button variant="base" label="View Less" onclick={viewLess}></lightning-button>
+        </template>
     </template>
 </template>
